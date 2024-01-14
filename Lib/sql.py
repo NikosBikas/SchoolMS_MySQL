@@ -1,5 +1,7 @@
 from datetime import date
+from tabulate import tabulate
 import time
+ 
 
 def warningMessage():
     while True:
@@ -20,7 +22,7 @@ def dropDataBase(connection):
 
 def createDataBaseInMySql(connection):
     create_db = "create database if not exists schoolms"
-    use_db = "use schoolMS"
+    use_db = "use schoolms"
     
     with connection.cursor() as cursor:
         cursor.execute(create_db)
@@ -31,7 +33,7 @@ def createDataBaseInMySql(connection):
 
 
 def createTablesInDatabase(connection):    
-    assignments_table = """ create table if not exists Assignments(
+    Assignments_table = """ create table if not exists Assignments(
     ID int auto_increment  primary key,
 	Title varchar(50) NOT NULL,
 	Description nvarchar(50) NULL,
@@ -40,14 +42,14 @@ def createTablesInDatabase(connection):
 	TotalMark decimal(5, 2) NULL
     ); """
 
-    trainers_table  = """ create table if not exists Trainers(
+    Trainers_table  = """ create table if not exists Trainers(
 	ID int auto_increment primary key,
     FirstName varchar(45) not null,
     LastName varchar(45) not null,
     Subject varchar(45) not null
     );  """
 
-    students_table = """ create table if not exists Students(
+    Students_table = """ create table if not exists Students(
 	ID int auto_increment primary key,
     FirstName varchar(45) not null,
     LastName varchar(45) not null,
@@ -55,7 +57,7 @@ def createTablesInDatabase(connection):
     TuitionFees decimal(6, 2) null
     );  """
 
-    courses_table = """ create table if not exists Courses(
+    Courses_table = """ create table if not exists Courses(
 	ID int auto_increment  primary key,
     Title varchar(45) not null,
     Stream varchar(45) not null,
@@ -76,23 +78,23 @@ def createTablesInDatabase(connection):
     ); """
 
     stdsPerCourse_table = """ create table if not exists StudentsPerCourse(
-    students_ID int not null,
-    courses_ID int not null,
-    foreign key (students_ID) references Students(ID),
-    foreign key (courses_ID) references Courses(ID)
+    Students_ID int not null,
+    Courses_ID int not null,
+    foreign key (Students_ID) references Students(ID),
+    foreign key (Courses_ID) references Courses(ID)
     ); """
 
     with connection.cursor() as cursor:
-        cursor.execute(assignments_table)
+        cursor.execute(Assignments_table)
         print("Assignments Table was Created!")
         time.sleep(0)
-        cursor.execute(trainers_table)
+        cursor.execute(Trainers_table)
         print("Trainers Table was Created!")
         time.sleep(0)
-        cursor.execute(students_table)
+        cursor.execute(Students_table)
         print("Students Table was Created!")
         time.sleep(0)
-        cursor.execute(courses_table)
+        cursor.execute(Courses_table)
         print("Courses Table was Created!")
         time.sleep(0)
         cursor.execute(assPerCourse_table)
@@ -103,7 +105,7 @@ def createTablesInDatabase(connection):
         time.sleep(0)
 
 def insertDummyDataToTables(connection):
-    assignments_data = """ insert into assignments(Title,Description,SubmissionDate,OralMark,TotalMark)
+    Assignments_data = """ insert into Assignments(Title,Description,SubmissionDate,OralMark,TotalMark)
     values ('Assignment 1','Individual Project 1', '2021/11/29' , 80 ,100),
     ('Assignment 2','Individual Project - Part A', '2021/12/21' , 80 ,100),
     ('Assignment 3','Individual Project - Part B', '2021/02/02' , 80 ,100),
@@ -113,23 +115,23 @@ def insertDummyDataToTables(connection):
     ('Assignment 7','Fifth Assignment', '2022/03/21' , 80 ,100),
     ('Assignment 8','Group Project', '2022/04/26' , 80 ,100); """
     
-    trainers_data = """ insert into trainers(FirstName,LastName,Subject)
+    Trainers_data = """ insert into Trainers(FirstName,LastName,Subject)
     values ('Name1','Last_Name1','Python'),
     ('Name2','Last_Name2','C#'),
     ('Name3','Last_Name3','Java'),
     ('Name4','Last_Name4','JavaScript'); """
 
-    course_data = """ insert into courses(Title,Stream,Type,StartDate,EndDate,TrainersID)
-    values ('BC13JAFT','Java','Full_time','2021/10/18','2022/04/20',(select ID from trainers where Subject='Java')),
-    ('BC13JAPT','Java','Part_time','2021/10/18','2022/01/20',(select ID from trainers where Subject='Java')),
-    ('C13C#FT','C#','Full_time','2021/10/18','2022/04/20',(select ID from trainers where Subject='C#')),
-    ('BC13C#PT','C#','Part_time','2021/10/18','2022/01/20',(select ID from trainers where Subject='C#')),
-    ('C13PYFT','Python','Full_time','2021/10/18','2022/04/20',(select ID from trainers where Subject='Python')),
-    ('BC13PYPT','Python','Part_time','2021/10/18','2022/01/20',(select ID from trainers where Subject='Python')),
-    ('C13JSFT','JavaScript','Full_time','2021/10/18','2022/04/20',(select ID from trainers where Subject='JavaScript')),
-    ('BC13JSPT','JavaScript','Part_time','2021/10/18','2022/01/20',(select ID from trainers where Subject='JavaScript'));"""
+    Course_data = """ insert into Courses(Title,Stream,Type,StartDate,EndDate,TrainersID)
+    values ('BC13JAFT','Java','Full_time','2021/10/18','2022/04/20',(select ID from Trainers where Subject='Java')),
+    ('BC13JAPT','Java','Part_time','2021/10/18','2022/01/20',(select ID from Trainers where Subject='Java')),
+    ('C13C#FT','C#','Full_time','2021/10/18','2022/04/20',(select ID from Trainers where Subject='C#')),
+    ('BC13C#PT','C#','Part_time','2021/10/18','2022/01/20',(select ID from Trainers where Subject='C#')),
+    ('C13PYFT','Python','Full_time','2021/10/18','2022/04/20',(select ID from Trainers where Subject='Python')),
+    ('BC13PYPT','Python','Part_time','2021/10/18','2022/01/20',(select ID from Trainers where Subject='Python')),
+    ('C13JSFT','JavaScript','Full_time','2021/10/18','2022/04/20',(select ID from Trainers where Subject='JavaScript')),
+    ('BC13JSPT','JavaScript','Part_time','2021/10/18','2022/01/20',(select ID from Trainers where Subject='JavaScript'));"""
     
-    students_data = """ insert into students(FirstName,LastName,DateOfBirth,TuitionFees)
+    Students_data = """ insert into Students(FirstName,LastName,DateOfBirth,TuitionFees)
     values ('Name1','Last_Name1','1994/06/10',2000),
     ('Name2','Last_Name2','1987/06/10',2000),
     ('Name3','Last_Name3','1990/06/10',2000),
@@ -139,7 +141,7 @@ def insertDummyDataToTables(connection):
     ('Name7','Last_Name7','1994/06/10',2000),
     ('Name8','Last_Name8','1994/06/10',2000); """
     
-    stdsPerCourse_data = """ insert into studentspercourse(students_ID, courses_ID) 
+    stdsPerCourse_data = """ insert into StudentsPerCourse(Students_ID, Courses_ID) 
     values (1 , 6),
     (1 , 3),
     (2 , 6),
@@ -151,7 +153,7 @@ def insertDummyDataToTables(connection):
     (7 , 7),
     (8 , 8); """
     
-    assPerCourse_data = """ insert into assignmentspercourse(assignments_ID, courses_ID) 
+    assPerCourse_data = """ insert into AssignmentsPerCourse(Assignments_ID, Courses_ID) 
     values (1 , 6),
     (2 , 6),
     (3 , 6),
@@ -163,19 +165,19 @@ def insertDummyDataToTables(connection):
 
     with connection.cursor() as cursor:
         print("Inserting dummy data to the tables: \n")
-        cursor.execute(assignments_data)
+        cursor.execute(Assignments_data)
         connection.commit()
         print("Assignments data inserted!")
         time.sleep(0)        
-        cursor.execute(trainers_data)
+        cursor.execute(Trainers_data)
         connection.commit()
         print("Trainers data inserted!")
         time.sleep(0)  
-        cursor.execute(course_data)
+        cursor.execute(Course_data)
         connection.commit()
         print("Course data inserted!")
         time.sleep(0)          
-        cursor.execute(students_data)
+        cursor.execute(Students_data)
         connection.commit()
         print("Students data inserted!")
         time.sleep(0)  
@@ -189,42 +191,48 @@ def insertDummyDataToTables(connection):
         time.sleep(0)  
 
 def displayStudents(connection):
-    sql_insert_query = "select * from students;"
+    sql_insert_query = "select * from Students;"
+    
     with connection.cursor() as cursor:
         cursor.execute(sql_insert_query)
         result = cursor.fetchall()
-        print("ID | FirstName | LastName | DateOfBirth | TuitionFees \n")
-        for row in result:            
-            print(f'{row[0]},{row[1]},{row[2]},{row[3]},{row[4]}')
+
+    headers = ["ID", "First Name", "Last Name", "Date of Birth", "Tuition Fees"]
+    table_data = [(row[0], row[1], row[2], row[3], row[4]) for row in result]
+
+    print(tabulate(table_data, headers=headers, tablefmt="pretty"))
 
 def displayStdsPerCourse(connection):
-    sql_insert_query = """select students.ID as StudentsID, students.FirstName as First_Name, students.LastName as Last_Name,
-    courses.ID as Courses_ID, courses.Title as Courses_Title, courses.Stream as Course_Stream,
-    courses.Type as Course_Type
-    from students, courses, studentspercourse
-    where students.ID = studentspercourse.Students_ID and courses.ID = studentspercourse.Courses_ID
-    order by courses.Title, students.FirstName;"""
+    sql_insert_query = """select Students.ID as StudentsID, Students.FirstName as First_Name, Students.LastName as Last_Name,
+    Courses.ID as Courses_ID, Courses.Title as Courses_Title, Courses.Stream as Course_Stream,
+    Courses.Type as Course_Type
+    from Students, Courses, StudentsPerCourse
+    where Students.ID = StudentsPerCourse.Students_ID and Courses.ID = StudentsPerCourse.Courses_ID
+    order by Courses.Title, Students.FirstName;"""
     with connection.cursor() as cursor:
         cursor.execute(sql_insert_query)
         result = cursor.fetchall()
-        print("Students ID | First_Name | Last_Name | Course_ID | Course_Title | Course_Stream | Course_Type  \n")
-        for row in result:            
-            print(f'{row[0]},{row[1]},{row[2]},{row[3]},{row[4]},{row[5]},{row[6]}')
 
+    headers = ["Students ID", "First Name", "Last Name", "Course ID", "Course Title", "Course Stream", "Course Type"]
+    table_data = [(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in result]
+    print(tabulate(table_data, headers=headers, tablefmt="pretty"))
+    
 def displayStdsMultipleCourses(connection):
-    sql_insert_query = """select students.ID as StudentID, students.FirstName as FirstName, students.LastName as LastName,
+    sql_insert_query = """select Students.ID as StudentID, Students.FirstName as FirstName, Students.LastName as LastName,
     count(*) as NumberOfCourses
-    from students, studentspercourse, courses
-    where students.ID = studentspercourse.students_ID
-    and courses.ID = studentspercourse.Courses_ID
-    group by students.ID, students.FirstName, students.LastName
+    from Students, StudentsPerCourse, Courses
+    where Students.ID = StudentsPerCourse.Students_ID
+    and Courses.ID = StudentsPerCourse.Courses_ID
+    group by Students.ID, Students.FirstName, Students.LastName
     having count(*) > 1;"""
     with connection.cursor() as cursor:
         cursor.execute(sql_insert_query)
         result = cursor.fetchall()
-        print("Students_ID | First_Name | Last_Name | Number Of Courses  \n")
-        for row in result:            
-            print(f'{row[0]},{row[1]},{row[2]},{row[3]}')
+
+    headers = ["Students ID", "First Name", "Last Name", "Number of Courses"]
+    table_data = [(row[0], row[1], row[2], row[3]) for row in result]
+
+    print(tabulate(table_data, headers=headers, tablefmt="pretty"))
 
 def addNewStudent(connection):
     while True:
@@ -271,34 +279,38 @@ def addNewStudent(connection):
         break
     Date = str(Date)
     TuituinFees = str(TuituinFees)  
-    sql_insert_query="insert into students(FirstName,LastName,DateOfBirth,TuitionFees) values ('"+ FirstName +"','"+ LastName +"','"+ Date +"','"+ TuituinFees +"')";  
+    sql_insert_query="insert into Students(FirstName,LastName,DateOfBirth,TuitionFees) values ('"+ FirstName +"','"+ LastName +"','"+ Date +"','"+ TuituinFees +"')";  
     with connection.cursor() as cursor:
        cursor.execute(sql_insert_query)
        connection.commit()      
        print("New Student Added")
 
 def displayTrainers(connection):
-    sql_insert_query = "select * from trainers;"
+    sql_insert_query = "select * from Trainers;"
     with connection.cursor() as cursor:
         cursor.execute(sql_insert_query)
         result = cursor.fetchall()
-        print("ID | FirstName | LastName | Subject\n")
-        for row in result:            
-            print(f'{row[0]},{row[1]},{row[2]},{row[3]}')
+
+    headers = ["ID", "First Name", "Last Name", "Subject"]
+    table_data = [(row[0], row[1], row[2], row[3]) for row in result]
+
+    print(tabulate(table_data, headers=headers, tablefmt="pretty"))
 
 def displayTrainersPerCourse(connection):
-    sql_insert_query = """select trainers.ID as TrainersID, trainers.FirstName as First_Name, trainers.LastName as Last_Name,
-    courses.ID as CourseID, courses.Title as Course_Title, courses.Stream as Course_Stream,
+    sql_insert_query = """select Trainers.ID as TrainersID, Trainers.FirstName as First_Name, Trainers.LastName as Last_Name,
+    Courses.ID as CourseID, Courses.Title as Course_Title, Courses.Stream as Course_Stream,
     Courses.Type as Course_Type
     from Trainers ,Courses 
-    where Trainers.ID = courses.TrainersID
+    where Trainers.ID = Courses.TrainersID
     order by Trainers.ID;"""
     with connection.cursor() as cursor:
         cursor.execute(sql_insert_query)
         result = cursor.fetchall()
-        print("Trainers_ID | First_Name | Last_Name | Course_ID | Course_Title | Course_Stream | Course_Type\n")
-        for row in result:            
-            print(f'{row[0]},{row[1]},{row[2]},{row[3]},{row[4]},{row[5]},{row[6]}')
+
+    headers = ["Trainers ID", "First Name", "Last Name", "Course ID", "Course Title", "Course Stream", "Course Type"]
+    table_data = [(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in result]
+
+    print(tabulate(table_data, headers=headers, tablefmt="pretty"))
 
 def addNewTrainer(connection):
     while True:
@@ -334,50 +346,56 @@ def addNewTrainer(connection):
             print("Wrong Input! Available options: C# , Python, JavaScript, Java")
             continue
         break
-    sql_insert_query="insert into trainers(FirstName,LastName,Subject) values ('"+ FirstName +"','"+ LastName +"','"+ Subject +"')";  
+    sql_insert_query="insert into Trainers(FirstName,LastName,Subject) values ('"+ FirstName +"','"+ LastName +"','"+ Subject +"')";  
     with connection.cursor() as cursor:
        cursor.execute(sql_insert_query)
        connection.commit()      
        print("New Trainer Added")
 
 def displayAssignments(connection):
-    sql_insert_query = "select * from assignments;"
+    sql_insert_query = "select * from Assignments;"
     with connection.cursor() as cursor:
         cursor.execute(sql_insert_query)
         result = cursor.fetchall()
-        print("Title | Description | SubmissionDate | OralMark | TotalMark\n")
-        for row in result:            
-            print(f'{row[0]},{row[1]},{row[2]},{row[3]},{row[4]},{row[5]}')
+
+    headers = ["Title", "Description", "Submission Date", "Oral Mark", "Total Mark"]
+    table_data = [(row[0], row[1], row[2], row[3], row[4], row[5]) for row in result]
+
+    print(tabulate(table_data, headers=headers, tablefmt="pretty"))
 
 def displayAssPerCourse(connection):
-    sql_insert_query = """select assignments.ID as AssignmentID, assignments.Title as Title, assignments.Description AS Description,
-    courses.ID as CourseID, courses.Title as Course_Title, courses.Stream as Course_Stream,
-    courses.Type as Course_Type
-    from assignments, courses, assignmentspercourse
-    where assignments.ID = assignmentspercourse.Assignments_ID and courses.ID = assignmentspercourse.Courses_ID
-    order by courses.ID;"""
+    sql_insert_query = """select Assignments.ID as AssignmentID, Assignments.Title as Title, Assignments.Description AS Description,
+    Courses.ID as CourseID, Courses.Title as Course_Title, Courses.Stream as Course_Stream,
+    Courses.Type as Course_Type
+    from Assignments, Courses, AssignmentsPerCourse
+    where Assignments.ID = AssignmentsPerCourse.Assignments_ID and Courses.ID = AssignmentsPerCourse.Courses_ID
+    order by Courses.ID;"""
     with connection.cursor() as cursor:
         cursor.execute(sql_insert_query)
         result = cursor.fetchall()
-        print("Assignment_ID | Title | Description | Course_ID | Course_Title | Course_Stream | Course_Type\n")
-        for row in result:            
-            print(f'{row[0]},{row[1]},{row[2]},{row[3]},{row[4]},{row[5]},{row[6]}')
+
+    headers = ["Assignment ID", "Title", "Description", "Course ID", "Course Title", "Course Stream", "Course Type"]
+    table_data = [(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in result]
+
+    print(tabulate(table_data, headers=headers, tablefmt="pretty"))
 
 def displayAssPerStudentPerCourse(connection):
-    sql_insert_query = """select assignments.ID as AssignmentID, assignments.Title as Title, assignments.Description AS Description,
-    courses.ID as CourseID, courses.Title as Course_Title, courses.Stream as Course_Stream,
-    courses.Type as Course_Type, students.ID AS StudentID, students.FirstName AS FirstName, students.LastName AS LastName
-    from assignments, courses, students, assignmentspercourse, studentspercourse
-    where assignments.ID = assignmentspercourse.Assignments_ID AND courses.ID = assignmentspercourse.Courses_ID
-    and students.ID = studentspercourse.Students_ID AND courses.ID = studentspercourse.Courses_ID
-    order by assignments.ID;
+    sql_insert_query = """select Assignments.ID as AssignmentID, Assignments.Title as Title, Assignments.Description AS Description,
+    Courses.ID as CourseID, Courses.Title as Course_Title, Courses.Stream as Course_Stream,
+    Courses.Type as Course_Type, Students.ID AS StudentID, Students.FirstName AS FirstName, Students.LastName AS LastName
+    from Assignments, Courses, Students, AssignmentsPerCourse, StudentsPerCourse
+    where Assignments.ID = AssignmentsPerCourse.Assignments_ID AND Courses.ID = AssignmentsPerCourse.Courses_ID
+    and Students.ID = StudentsPerCourse.Students_ID AND Courses.ID = StudentsPerCourse.Courses_ID
+    order by Assignments.ID;
     """
     with connection.cursor() as cursor:
         cursor.execute(sql_insert_query)
         result = cursor.fetchall()
-        print("Assignment_ID | Title | Description | Course_ID | Course_Title | Course_Stream | Course_Type | Student_ID | First_Name | Last_Name\n")
-        for row in result:            
-            print(f'{row[0]},{row[1]},{row[2]},{row[3]},{row[4]},{row[5]},{row[6]}')
+
+    headers = ["Assignment ID", "Title", "Description", "Course ID", "Course Title", "Course Stream", "Course Type", "Student ID", "First Name", "Last Name"]
+    table_data = [(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9]) for row in result]
+
+    print(tabulate(table_data, headers=headers, tablefmt="pretty"))
 
 def addNewAssignment(connection):
     while True:
@@ -433,20 +451,22 @@ def addNewAssignment(connection):
             continue
         break
     SubDate = str(SubDate)
-    sql_insert_query="insert into assignments(Title,Description,SubmissionDate,OralMark,TotalMark) values ('"+ Title +"','"+ Description +"','"+ SubDate +"','"+ oralMark +"','"+ totalMark +"')";  
+    sql_insert_query="insert into Assignments(Title,Description,SubmissionDate,OralMark,TotalMark) values ('"+ Title +"','"+ Description +"','"+ SubDate +"','"+ oralMark +"','"+ totalMark +"')";  
     with connection.cursor() as cursor:
        cursor.execute(sql_insert_query)
        connection.commit()      
        print("New Assignment Added")
 
 def displayCourses(connection):
-    sql_insert_query = "select * from courses;"
+    sql_insert_query = "select * from Courses;"
     with connection.cursor() as cursor:
         cursor.execute(sql_insert_query)
         result = cursor.fetchall()
-        print("Course_ID | Title | Stream | Type | Start_Date | End_Date | Trainers_ID\n")
-        for row in result:            
-            print(f'{row[0]},{row[1]},{row[2]},{row[3]},{row[4]},{row[5]},{row[6]}')
+
+    headers = ["Course ID", "Title", "Stream", "Type", "Start Date", "End Date", "Trainers ID"]
+    table_data = [(row[0], row[1], row[2], row[3], row[4], row[5], row[6]) for row in result]
+
+    print(tabulate(table_data, headers=headers, tablefmt="pretty"))
 
 def addNewCourse(connection):
     while True:
@@ -512,7 +532,7 @@ def addNewCourse(connection):
                 continue
     startDate = str(startDate)
     endDate = str(endDate)
-    sql_insert_query="insert into courses(Title,Stream,Type,StartDate,EndDate,TrainersID) values ('"+ title +"','"+ stream +"','"+ type +"','"+ startDate +"','"+ endDate +"',(select ID from trainers where Subject='"+ stream +"'))";  
+    sql_insert_query="insert into Courses(Title,Stream,Type,StartDate,EndDate,TrainersID) values ('"+ title +"','"+ stream +"','"+ type +"','"+ startDate +"','"+ endDate +"',(select ID from Trainers where Subject='"+ stream +"'))";  
     with connection.cursor() as cursor:
         cursor.execute(sql_insert_query)
         connection.commit()      

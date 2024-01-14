@@ -1,5 +1,5 @@
 -- drop database if exists schoolms;
-create database if not exists schoolMS;
+create database if not exists schoolms;
 use schoolms;
 -- Create Tables
 -- drop table assignments;
@@ -57,7 +57,7 @@ foreign key (courses_ID) references Courses(ID)
 );
 
 -- Insert Data to the tables
-insert into assignments(Title,Description,SubmissionDate,OralMark,TotalMark)
+insert into Assignments(Title,Description,SubmissionDate,OralMark,TotalMark)
 values ('Assignment 1','Individual Project 1', '2021/11/29' , 80 ,100),
 ('Assignment 2','Individual Project - Part A', '2021/12/21' , 80 ,100),
 ('Assignment 3','Individual Project - Part B', '2021/02/02' , 80 ,100),
@@ -68,13 +68,13 @@ values ('Assignment 1','Individual Project 1', '2021/11/29' , 80 ,100),
 ('Assignment 8','Group Project', '2022/04/26' , 80 ,100);
 
 -- drop table trainers;
-insert into trainers(FirstName,LastName,Subject)
+insert into Trainers(FirstName,LastName,Subject)
 values ('Name1','Last_Name1','Python'),
 ('Name2','Last_Name2','C#'),
 ('Name3','Last_Name3','Java'),
 ('Name4','Last_Name4','JavaScript');
 
-insert into courses(Title,Stream,Type,StartDate,EndDate,TrainersID)
+insert into Courses(Title,Stream,Type,StartDate,EndDate,TrainersID)
 values ('BC13JAFT','Java','Full_time','2021/10/18','2022/04/20',(select ID from trainers where Subject='Java')),
 ('BC13JAPT','Java','Part_time','2021/10/18','2022/01/20',(select ID from trainers where Subject='Java')),
 ('C13C#FT','C#','Full_time','2021/10/18','2022/04/20',(select ID from trainers where Subject='C#')),
@@ -84,7 +84,7 @@ values ('BC13JAFT','Java','Full_time','2021/10/18','2022/04/20',(select ID from 
 ('C13JSFT','JavaScript','Full_time','2021/10/18','2022/04/20',(select ID from trainers where Subject='JavaScript')),
 ('BC13JSPT','JavaScript','Part_time','2021/10/18','2022/01/20',(select ID from trainers where Subject='JavaScript'));
 
-insert into students(FirstName,LastName,DateOfBirth,TuitionFees)
+insert into Students(FirstName,LastName,DateOfBirth,TuitionFees)
 values ('Name1','Last_Name4','1994/06/10',2000),
 ('Name2','Last_Name2','1987/06/10',2000),
 ('Name3','Last_Name3','1990/06/10',2000),
@@ -94,7 +94,7 @@ values ('Name1','Last_Name4','1994/06/10',2000),
 ('Name7','Last_Name7','1994/06/10',2000),
 ('Name8','Last_Name8','1994/06/10',2000);
 
-insert into studentspercourse(students_ID, courses_ID) 
+insert into StudentsPerCourse(students_ID, courses_ID) 
 values (1 , 6),
 (1 , 3),
 (2 , 6),
@@ -106,7 +106,7 @@ values (1 , 6),
 (7 , 7),
 (8 , 8);
 
-insert into assignmentspercourse(assignments_ID, courses_ID) 
+insert into AssignmentsPerCourse(assignments_ID, courses_ID) 
 values (1 , 6),
 (2 , 6),
 (3 , 6),
@@ -118,16 +118,16 @@ values (1 , 6),
 
 -- Display all students 
 select * 
-from students;
+from Students;
 -- Display all trainers
 select * 
-from trainers;
+from Trainers;
 -- Display all assignments
 select * 
-from assignments;
+from Assignments;
 -- Display all courses
 select * 
-from courses;
+from Courses;
 
 -- select Students_ID
 -- from studentspercourse;

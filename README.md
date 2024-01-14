@@ -7,6 +7,7 @@ An extension of the original SchoolMS project that implements the use of mysql f
 ## Notes
 
 1. Make sure you have installed python version 3.10
-2. Install MySQL WorkBench
-3. Install mysql-connector-python using pip
+2. Install MySQL WorkBench localy or you can use and external mysql database!
+3. Create a virtual environment and activate it!
+3. Install python requirements using pip
 4. Run the project using python (command: python SchoolMS.py)
